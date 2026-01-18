@@ -215,20 +215,28 @@ print(average_app_usage_by_device_model)
 
 
 # ---- Combine and Display Plots ----
+# Create output directory if it doesn't exist
+if (!dir.exists("../docs/figures")) {
+  dir.create("../docs/figures", recursive = TRUE)
+}
+
 # Figure 1: Box Plot, Device Model, Gender Distribution, OS Analysis
-grid.arrange(
+all_graphs <- grid.arrange(
   boxplot_plot,
   device_model_plot,
   gender_analysis_plot,
   operating_system_plot,
   nrow = 2
 )
+ggsave("../docs/figures/all_graphs_overview.jpg", plot = all_graphs, width = 12, height = 8, dpi = 300)
 
 # Figure 2: Distribution of Daily App Usage Time
 print(daily_app_usage_histogram)
+ggsave("../docs/figures/daily_app_usage_distribution.jpg", plot = daily_app_usage_histogram, width = 10, height = 6, dpi = 300)
 
 # Figure 3: App Usage Distribution by Gender
 print(app_usage_by_gender)
+ggsave("../docs/figures/app_usage_by_gender.jpg", plot = app_usage_by_gender, width = 8, height = 6, dpi = 300)
 
 # Figure 4: Average App Usage by Device Model
 print(average_app_usage_by_device_model)
@@ -322,6 +330,7 @@ app_usage_by_os <- ggplot(data, aes(x = Operating.System, y = App.Usage.Time..mi
 
 # Display plots
 print(age_vs_app_usage)
+ggsave("../docs/figures/age_vs_app_usage_scatter.jpg", plot = age_vs_app_usage, width = 10, height = 6, dpi = 300)
 print(app_usage_by_os)
 
 # t-test for app usage time by gender
@@ -418,8 +427,9 @@ for (i in seq_along(columns)) {
 }
 
 # Arrange plots in a 2x3 grid layout
-grid.arrange(
+numerical_features_grid <- grid.arrange(
   grobs = plot_list,
   nrow = 2, ncol = 3,
   top = textGrob("Numerical Feature Analysis", gp = gpar(fontsize = 20, fontface = "bold"))
 )
+ggsave("../docs/figures/numerical_features_summary.jpg", plot = numerical_features_grid, width = 14, height = 8, dpi = 300)
